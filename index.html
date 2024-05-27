@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #quote {
+            font-size: 24px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="quote"></div>
+    <script>
+        const quoteElement = document.getElementById('quote');
+        let quotes = [];
+        let currentIndex = 0;
+
+        function fetchQuotes() {
+            fetch('/quotes')
+                .then(response => response.json())
+                .then(data => {
+                    quotes = data;
+                    updateQuote();
+                    setInterval(updateQuote, 5000);
+                });
+        }
+
+        function updateQuote() {
+            if (quotes.length > 0) {
+                quoteElement.textContent = quotes[currentIndex];
+                currentIndex = (currentIndex + 1) % quotes.length;
+            }
+        }
+
+        fetchQuotes();
+    </script>
+</body>
+</html>
